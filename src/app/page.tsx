@@ -119,8 +119,6 @@ export default async function Home() {
     },
   ];
 
-  console.log(dashboardData);
-
   return (
     <>
       <DefaultLayout>

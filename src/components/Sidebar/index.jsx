@@ -1,21 +1,15 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
-import { usePathname } from "next/navigation";
-import Link from "next/link";
 import Image from "next/image";
-import SidebarLinkGroup from "./SidebarLinkGroup";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
 
-interface SidebarProps {
-  sidebarOpen: boolean;
-  setSidebarOpen: (arg: boolean) => void;
-}
-
-const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
+const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
   const pathname = usePathname();
 
-  const trigger = useRef<any>(null);
-  const sidebar = useRef<any>(null);
+  const trigger = useRef(null);
+  const sidebar = useRef(null);
 
   let storedSidebarExpanded = "true";
 
@@ -25,7 +19,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 
   // close on click outside
   useEffect(() => {
-    const clickHandler = ({ target }: MouseEvent) => {
+    const clickHandler = ({ target }) => {
       if (!sidebar.current || !trigger.current) return;
       if (
         !sidebarOpen ||
@@ -41,7 +35,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 
   // close if the esc key is pressed
   useEffect(() => {
-    const keyHandler = ({ key }: KeyboardEvent) => {
+    const keyHandler = ({ key }) => {
       if (!sidebarOpen || key !== "Escape") return;
       setSidebarOpen(false);
     };
