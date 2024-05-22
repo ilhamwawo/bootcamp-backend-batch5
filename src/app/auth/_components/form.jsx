@@ -28,7 +28,7 @@ export default function Form() {
     } catch (err) {
       Swal.fire({
         title: "Error",
-        text: err?.response?.data?.message || "Internal Server Error",
+        text: err?.response?.data || "Internal Server Error",
         icon: "error",
       });
     }

@@ -118,6 +118,16 @@ export async function GET(req) {
 
     const decoded = jwt.verify(token, process.env.JWT_ACCESS_KEY);
 
+    const user = await db.user.findFirst({
+      where: {
+        id: decoded.id,
+      },
+    });
+
+    if (!user) {
+      return new NextResponse("Unauthorized", { status: 401 });
+    }
+
     const orders = await db.order.findMany({
       include: {
         order_items: true,
@@ -126,6 +136,12 @@ export async function GET(req) {
       orderBy: {
         created_at: "asc",
       },
+      where:
+        user.role === "ADMIN"
+          ? {}
+          : {
+              user_id: decoded.id,
+            },
     });
 
     return NextResponse.json(orders);
