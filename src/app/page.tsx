@@ -68,7 +68,7 @@ export default async function Home() {
     {
       id: 3,
       title: "Total Items Sold",
-      value: itemSold._sum.quantity,
+      value: itemSold._sum.quantity || 0,
       icon: (
         <svg
           className="fill-primary dark:fill-white"

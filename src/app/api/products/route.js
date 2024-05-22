@@ -4,16 +4,10 @@ import { NextResponse } from "next/server";
 
 export async function GET(req) {
   try {
-    const token = req.headers.get("authorization");
-
-    if (!token) {
-      return new NextResponse("Unauthorized", { status: 401 });
-    }
-
-    const decoded = jwt.verify(token, process.env.JWT_ACCESS_KEY);
-
     const products = await db.product.findMany({
-      include: {},
+      include: {
+        category: true,
+      },
     });
 
     return NextResponse.json(products);

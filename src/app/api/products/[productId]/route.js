@@ -7,17 +7,12 @@ import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 
 export async function GET(req, { params }) {
   try {
-    const token = req.headers.get("authorization");
-
-    if (!token) {
-      return new NextResponse("Unauthorized", { status: 401 });
-    }
-
-    const decoded = jwt.verify(token, process.env.JWT_ACCESS_KEY);
-
     const product = await db.product.findFirst({
       where: {
         id: params.productId,
+      },
+      include: {
+        category: true,
       },
     });
 

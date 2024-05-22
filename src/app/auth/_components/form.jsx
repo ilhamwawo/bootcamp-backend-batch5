@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import Cookies from "js-cookie";
+import Swal from "sweetalert2";
 
 export default function Form() {
   const router = useRouter();
@@ -25,7 +26,11 @@ export default function Form() {
       Cookies.set("currentUser", data.token);
       router.push("/");
     } catch (err) {
-      console.log(err);
+      Swal.fire({
+        title: "Error",
+        text: err?.response?.data?.message || "Internal Server Error",
+        icon: "error",
+      });
     }
   }
 
