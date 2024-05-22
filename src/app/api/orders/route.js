@@ -130,8 +130,12 @@ export async function GET(req) {
 
     const orders = await db.order.findMany({
       include: {
-        order_items: true,
-        user: true,
+        order_items: {
+          include: {
+            product: true,
+          },
+        },
+        user: user.role === "ADMIN" ? true : false,
       },
       orderBy: {
         created_at: "asc",
