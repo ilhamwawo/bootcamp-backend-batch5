@@ -7,25 +7,23 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import Swal from "sweetalert2";
 
-export default function Form({ categories, product }) {
+export default function Form({ categories }) {
   const token = Cookies.get("currentUser");
   const router = useRouter();
 
   const [isLoading, setIsLoading] = useState(false);
-  const [form, setForm] = useState(
-    product || {
-      title: "",
-      price: 0,
-      description: "",
-      category_id: "",
-      company: "",
-      stock: 0,
-      shipping: false,
-      featured: false,
-      colors: ["#000"],
-      images: [],
-    },
-  );
+  const [form, setForm] = useState({
+    title: "",
+    price: 0,
+    description: "",
+    category_id: "",
+    company: "",
+    stock: 0,
+    shipping: false,
+    featured: false,
+    colors: ["#000"],
+    images: [],
+  });
 
   function handleOnChange(e) {
     setForm({
@@ -53,31 +51,17 @@ export default function Form({ categories, product }) {
     };
 
     try {
-      if (product) {
-        const response = await axios.patch(
-          `/api/products/${product.id}`,
-          {
-            ...form,
-            featured: JSON.parse(form.featured),
-            shipping: JSON.parse(form.shipping),
-          },
-          {
-            headers,
-          },
-        );
-      } else {
-        const response = await axios.post(
-          "/api/products",
-          {
-            ...form,
-            featured: JSON.parse(form.featured),
-            shipping: JSON.parse(form.shipping),
-          },
-          {
-            headers,
-          },
-        );
-      }
+      const response = await axios.post(
+        "/api/products",
+        {
+          ...form,
+          featured: JSON.parse(form.featured),
+          shipping: JSON.parse(form.shipping),
+        },
+        {
+          headers,
+        },
+      );
 
       router.push("/product");
       router.refresh();
@@ -404,7 +388,7 @@ export default function Form({ categories, product }) {
                 disabled={isLoading}
                 className="flex w-full justify-center rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-90"
               >
-                {product ? "Update" : "Submit"}
+                Submit
               </button>
             </div>
           </form>

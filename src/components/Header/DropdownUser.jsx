@@ -1,14 +1,13 @@
-import { useEffect, useRef, useState } from "react";
-import Link from "next/link";
-import Image from "next/image";
-import axios from "axios";
 import Cookies from "js-cookie";
+import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
 
 const DropdownUser = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const router = useRouter();
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState("Admin");
 
   const trigger = useRef(null);
   const dropdown = useRef(null);
@@ -39,28 +38,10 @@ const DropdownUser = () => {
     return () => document.removeEventListener("keydown", keyHandler);
   });
 
-  async function fetchUser() {
-    try {
-      const res = await axios.get("/api/users", {
-        headers: {
-          Authorization: Cookies.get("currentUser"),
-        },
-      });
-
-      setUser(res.data);
-    } catch (err) {
-      router.push("/auth/signin");
-    }
-  }
-
   function handleLogout() {
     Cookies.remove("currentUser");
     router.push("/auth/signin");
   }
-
-  useEffect(() => {
-    fetchUser();
-  }, []);
 
   return (
     <div className="relative">
@@ -72,11 +53,9 @@ const DropdownUser = () => {
       >
         <span className="hidden text-right lg:block">
           <span className="block text-sm font-medium text-black dark:text-white">
-            {user?.name}
+            {user}
           </span>
-          <span className="block text-xs capitalize">
-            {user?.role.toLowerCase()}
-          </span>
+          <span className="block text-xs capitalize">{user}</span>
         </span>
 
         <span className="h-12 w-12 rounded-full">

@@ -13,53 +13,8 @@ export default function Table({ products }) {
   const router = useRouter();
   const token = Cookies.get("currentUser");
 
-  async function handleDelete(id) {
-    try {
-      const result = await Swal.fire({
-        title: "Delete Product",
-        text: "Are you sure you want to delete this product?",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-      });
-
-      if (result.isConfirmed) {
-        setIsLoading(true);
-
-        try {
-          await axios.delete(`/api/products/${id}`, {
-            headers: {
-              Authorization: token,
-            },
-          });
-
-          router.refresh();
-
-          Swal.fire({
-            title: "Product Deleted",
-            text: "The product has been deleted successfully",
-            icon: "success",
-          });
-        } catch (err) {
-          Swal.fire({
-            title: "Error",
-            text: err?.request?.response || "An error occurred during deletion",
-            icon: "error",
-          });
-        } finally {
-          setIsLoading(false);
-        }
-      }
-    } catch (err) {
-      console.error(err);
-      Swal.fire({
-        title: "Error",
-        text: "An error occurred",
-        icon: "error",
-      });
-    }
-  }
+  // Buatlah fungsi untuk mendelete product berdasarkan id
+  async function handleDelete(id) {}
 
   return (
     <div className="overflow-auto rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">

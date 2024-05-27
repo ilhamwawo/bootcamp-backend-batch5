@@ -1,33 +1,18 @@
 import CardDataStats from "@/components/CardDataStats";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
-import { db } from "@/lib/db";
-import { Metadata } from "next";
 
-export const metadata: Metadata = {
+export const metadata = {
   title:
     "Next.js E-commerce Dashboard | TailAdmin - Next.js Dashboard Template",
   description: "This is Next.js Home for TailAdmin Dashboard Template",
 };
 
 export default async function Home() {
-  const products = await db.product.count();
-  const orders = await db.order.count();
-  const itemSold = await db.orderItems.aggregate({
-    _sum: {
-      quantity: true,
-    },
-  });
-  const customers = await db.user.count({
-    where: {
-      role: "CUSTOMER",
-    },
-  });
-
   const dashboardData = [
     {
       id: 1,
       title: "Total Products",
-      value: products,
+      value: 0,
       icon: (
         <svg
           className="fill-primary dark:fill-white"
@@ -51,7 +36,7 @@ export default async function Home() {
     {
       id: 2,
       title: "Total Orders",
-      value: orders,
+      value: 0,
       icon: (
         <svg
           className="fill-primary dark:fill-white"
@@ -68,7 +53,7 @@ export default async function Home() {
     {
       id: 3,
       title: "Total Items Sold",
-      value: itemSold._sum.quantity || 0,
+      value: 0,
       icon: (
         <svg
           className="fill-primary dark:fill-white"
@@ -92,7 +77,7 @@ export default async function Home() {
     {
       id: 4,
       title: "Total Customers",
-      value: customers,
+      value: 0,
       icon: (
         <svg
           className="fill-primary dark:fill-white"

@@ -10,49 +10,8 @@ export default function Table({ categories }) {
   const router = useRouter();
   const token = Cookies.get("currentUser");
 
-  async function handleDelete(id) {
-    try {
-      const result = await Swal.fire({
-        title: "Delete Category",
-        text: "Are you sure you want to delete this category?",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-      });
-
-      if (result.isConfirmed) {
-        try {
-          await axios.delete(`/api/categories/${id}`, {
-            headers: {
-              Authorization: token,
-            },
-          });
-
-          router.refresh();
-
-          Swal.fire({
-            title: "Category Deleted",
-            text: "Category has been deleted",
-            icon: "success",
-          });
-        } catch (err) {
-          Swal.fire({
-            title: "Error",
-            text: err?.request?.response || "An error occurred during deletion",
-            icon: "error",
-          });
-        }
-      }
-    } catch (err) {
-      console.error(err);
-      Swal.fire({
-        title: "Error",
-        text: "An error occurred",
-        icon: "error",
-      });
-    }
-  }
+  // Buatlah fungsi untuk mendelete category berdasarkan id
+  async function handleDelete(id) {}
 
   return (
     <div className="overflow-auto rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">

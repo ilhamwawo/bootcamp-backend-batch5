@@ -17,8 +17,6 @@ export default async function CategoryPage() {
     },
   });
 
-  async function handleDelete() {}
-
   return (
     <DefaultLayout>
       <Breadcrumb pageName="Category" />
