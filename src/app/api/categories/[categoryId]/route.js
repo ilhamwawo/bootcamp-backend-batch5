@@ -1,120 +1,89 @@
-import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
-import jwt, { JsonWebTokenError } from "jsonwebtoken";
 import { db } from "@/lib/db";
 import { NextResponse } from "next/server";
 
 export async function GET(req, { params }) {
   try {
-    const token = req.headers.get("authorization");
-
-    if (!token) {
-      return new NextResponse("Unauthorized", { status: 401 });
-    }
-
-    const decoded = jwt.verify(token, process.env.JWT_ACCESS_KEY);
-
+    // Get category by id
     const category = await db.category.findFirst({
       where: {
         id: params.categoryId,
       },
     });
 
+    // Check if category is found
     if (!category) {
       return new NextResponse("Category not found", { status: 404 });
     }
-    return NextResponse.json(category);
+
+    // Return category to the client
+    return NextResponse.json(category, { status: 200 });
   } catch (err) {
-    console.log(err);
-    if (err instanceof JsonWebTokenError) {
-      return new NextResponse("Unauthorized", { status: 401 });
-    } else {
-      return new NextResponse("Internal Server Error", { status: 500 });
-    }
+    // Return error response
+    return new NextResponse("Internal server error", { status: err.status });
   }
 }
 
 export async function PATCH(req, { params }) {
   try {
-    const token = req.headers.get("authorization");
-
-    if (!token) {
-      return new NextResponse("Unauthorized", { status: 401 });
-    }
-
-    const decoded = jwt.verify(token, process.env.JWT_ACCESS_KEY);
-
+    // Get category by id
     const category = await db.category.findFirst({
       where: {
         id: params.categoryId,
       },
     });
 
+    // Check if category is found
     if (!category) {
       return new NextResponse("Category not found", { status: 404 });
     }
 
+    // Get name category from body
     const { name } = await req.json();
 
-    const updatedCategory = await db.category.update({
+    // Update category
+    const updateCategory = await db.category.update({
       where: {
         id: params.categoryId,
       },
       data: {
-        name,
+        name: name,
       },
     });
 
-    return NextResponse.json(updatedCategory);
+    // Return category to the client
+    return NextResponse.json(updateCategory, { status: 200 });
   } catch (err) {
-    console.log(err);
-    if (err instanceof JsonWebTokenError) {
-      return new NextResponse("Unauthorized", { status: 401 });
-    } else {
-      return new NextResponse("Internal Server Error", { status: 500 });
-    }
+    // Return error response
+    return new NextResponse("Internal server error", { status: err.status });
   }
 }
 
 export async function DELETE(req, { params }) {
   try {
-    const token = req.headers.get("authorization");
-
-    if (!token) {
-      return new NextResponse("Unauthorized", { status: 401 });
-    }
-
-    const decoded = jwt.verify(token, process.env.JWT_ACCESS_KEY);
-
+    // Get category by id
     const category = await db.category.findFirst({
       where: {
         id: params.categoryId,
       },
     });
 
+    // Check if category is found
     if (!category) {
       return new NextResponse("Category not found", { status: 404 });
     }
 
+    // Delete category
     await db.category.delete({
       where: {
         id: params.categoryId,
       },
     });
 
-    return new Response(null, {
-      status: 204,
-    });
+    // Return category to the client
+    return new NextResponse("Category deleted", { status: 200 });
   } catch (err) {
     console.log(err);
-    if (err instanceof JsonWebTokenError) {
-      return new NextResponse("Unauthorized", { status: 401 });
-    } else if (err instanceof PrismaClientKnownRequestError) {
-      return new NextResponse(
-        "This category cannot be deleted because there are products associated with it. Please delete the associated products first before deleting the category.",
-        { status: 400 },
-      );
-    } else {
-      return new NextResponse("Internal  asdas Server Error", { status: 500 });
-    }
+    // Return error response
+    return new NextResponse("Internal server error", { status: err.status });
   }
 }

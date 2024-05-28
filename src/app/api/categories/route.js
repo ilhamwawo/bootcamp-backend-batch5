@@ -1,63 +1,36 @@
-import jwt, { JsonWebTokenError } from "jsonwebtoken";
 import { db } from "@/lib/db";
 import { NextResponse } from "next/server";
 
-export async function POST(req, res) {
+export async function POST(req) {
   try {
-    const token = req.headers.get("authorization");
-
-    if (!token) {
-      return new NextResponse("Unauthorized", { status: 401 });
-    }
-
-    const decoded = jwt.verify(token, process.env.JWT_ACCESS_KEY);
-
+    // Get name on the body
     const { name } = await req.json();
 
-    if (!name) {
-      return new NextResponse("Insert name of category", { status: 400 });
-    }
-
+    // Create category with prisma
     const category = await db.category.create({
       data: {
         name: name,
       },
     });
 
-    return NextResponse.json(category);
+    // Return category to the client
+    return NextResponse.json(category, { status: 201 });
   } catch (err) {
     console.log(err);
-    if (err instanceof JsonWebTokenError) {
-      return new NextResponse("Unauthorized", { status: 401 });
-    } else {
-      return new NextResponse("Internal Server Error", { status: 500 });
-    }
+    // Return error response
+    return new NextResponse("Internal server error", { status: err.status });
   }
 }
 
-export async function GET(req, res) {
+export async function GET(req) {
   try {
-    const token = req.headers.get("authorization");
+    // Get all categories
+    const categories = await db.category.findMany();
 
-    if (!token) {
-      return new NextResponse("Unauthorized", { status: 401 });
-    }
-
-    const decoded = jwt.verify(token, process.env.JWT_ACCESS_KEY);
-
-    const categories = await db.category.findMany({
-      orderBy: {
-        created_at: "asc",
-      },
-    });
-
-    return NextResponse.json(categories);
+    // Return category to the client
+    return NextResponse.json(categories, { status: 200 });
   } catch (err) {
-    console.log(err);
-    if (err instanceof JsonWebTokenError) {
-      return new NextResponse("Unauthorized", { status: 401 });
-    } else {
-      return new NextResponse("Internal Server Error", { status: 500 });
-    }
+    // Return error response
+    return new NextResponse("Internal server error", { status: err.status });
   }
 }
