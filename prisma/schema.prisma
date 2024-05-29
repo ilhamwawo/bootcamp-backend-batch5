@@ -25,7 +25,6 @@ model User {
   updated_at DateTime @updatedAt
 
   products Product[]
-  reviews  Review[]
   orders   Order[]
 
   @@map("users")
@@ -50,7 +49,6 @@ model Product {
 
   created_at  DateTime     @default(now())
   updated_at  DateTime     @updatedAt
-  reviews     Review[]
   order_items OrderItems[]
 
   @@map("products")
@@ -63,23 +61,6 @@ model Category {
   created_at DateTime  @default(now())
   updated_at DateTime  @updatedAt
   products   Product[]
-}
-
-model Review {
-  id         String @id @default(uuid())
-  product_id String
-  user_id    String
-
-  text String @db.Text
-  star Int
-
-  product Product @relation(fields: [product_id], references: [id])
-  user    User    @relation(fields: [user_id], references: [id])
-
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
-
-  @@map("reviews")
 }
 
 model Order {

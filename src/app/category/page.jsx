@@ -1,8 +1,7 @@
+import Table from "@/app/category/_components/table";
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import { db } from "@/lib/db";
-import Link from "next/link";
-import Table from "@/app/category/_components/table";
 
 export const metadata = {
   title:

@@ -8,8 +8,10 @@ import { db } from "@/lib/db";
 
 export async function POST(req, res) {
   try {
+    // Get data from body request
     const { name, email, password, role } = await req.json();
 
+    // Create new user
     const user = await db.user.create({
       data: {
         name,
@@ -19,8 +21,10 @@ export async function POST(req, res) {
       },
     });
 
+    // Delete password from object user for hiding password
     delete user.password;
 
+    // Return user
     return NextResponse.json({
       ...user,
     });

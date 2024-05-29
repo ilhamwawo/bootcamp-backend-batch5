@@ -1,10 +1,8 @@
 "use client";
 
-import axios from "axios";
+import Cookies from "js-cookie";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import Cookies from "js-cookie";
-import Swal from "sweetalert2";
 
 export default function Table({ categories }) {
   const router = useRouter();
