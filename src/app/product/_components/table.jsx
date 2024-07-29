@@ -14,7 +14,33 @@ export default function Table({ products }) {
   const token = Cookies.get("currentUser");
 
   // Buatlah fungsi untuk mendelete product berdasarkan id
-  async function handleDelete(id) {}
+  async function handleDelete(id) {
+    try {
+
+      await axios.delete(`/api/products/${id}`, {
+        headers: {
+          Authorization: token
+        }
+      })
+
+      router.refresh()
+      
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  async function handleAddBulk() {
+    
+  }
+
+  async function handleBulkUpdate() {
+
+  }
+
+  async function handleBulkDelete() {
+                 
+  }
 
   return (
     <div className="overflow-auto rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
@@ -27,6 +53,31 @@ export default function Table({ products }) {
             Add Product
           </button>
         </Link>
+         <label className="inline-block cursor-pointer rounded bg-secondary px-5 py-2 font-medium text-white transition-all hover:bg-opacity-90" >
+            Bulk Add
+            <input
+              type="file"
+              className="hidden"
+              accept=".xls,.xlsx"
+              onChange={handleAddBulk}
+            /> 
+          </label>
+          <label className="inline-block cursor-pointer rounded bg-orange-500 px-5 py-2 font-medium text-white transition-all hover:bg-opacity-90">
+            Bulk Update
+            <input
+              type="file"
+              className="hidden"
+              accept=".xls,.xlsx"
+              onChange={handleBulkUpdate}
+            />
+          </label>
+          <button
+            onClick={handleBulkDelete}
+            className="inline-block cursor-pointer rounded bg-red px-5 py-2 font-medium text-white transition-all hover:bg-opacity-90"
+          >
+            Bulk Delete
+          </button>
+            
       </div>
 
       <div className="grid grid-cols-6 border-t border-stroke px-4 py-4.5 dark:border-strokedark sm:grid-cols-10 md:px-6 2xl:px-7.5">

@@ -22,7 +22,7 @@ export default function Form() {
         email: form.email,
         password: form.password,
       });
-
+      // console.log(data)
       Cookies.set("currentUser", data.token);
       router.push("/");
     } catch (err) {

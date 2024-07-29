@@ -9,8 +9,9 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 model User {
@@ -24,8 +25,7 @@ model User {
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 
-  products Product[]
-  orders   Order[]
+  orders Order[]
 
   @@map("users")
 }
@@ -36,16 +36,13 @@ model Product {
   price       Int
   description String?
   category_id String
-  user_id     String
   company     String
   stock       Int
   shipping    Boolean @default(false)
-  featured    Boolean @default(false)
   colors      Json
   images      Json
 
   category Category @relation(fields: [category_id], references: [id])
-  user     User     @relation(fields: [user_id], references: [id])
 
   created_at  DateTime     @default(now())
   updated_at  DateTime     @updatedAt
@@ -61,6 +58,8 @@ model Category {
   created_at DateTime  @default(now())
   updated_at DateTime  @updatedAt
   products   Product[]
+
+  @@map("categories")
 }
 
 model Order {
@@ -99,4 +98,13 @@ model OrderItems {
 enum UserRole {
   ADMIN
   CUSTOMER
+}
+
+model File {
+  id         String   @id @default(uuid())
+  filename   String   @unique
+  fileblob   Bytes
+  created_at DateTime @default(now())
+
+  @@map("files")
 }

@@ -34,6 +34,8 @@ export async function POST(req, res) {
     //   });
     // }
 
+
+
     const token = jwt.sign({ id: user.id }, process.env.JWT_ACCESS_KEY, {
       expiresIn: "7d",
     });
