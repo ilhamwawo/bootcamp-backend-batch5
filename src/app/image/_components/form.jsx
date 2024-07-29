@@ -54,7 +54,7 @@ export default function Form() {
         formData.append("files", file);
       });
 
-      const { data } = await axios.post(/api/images, formData, {
+      const { data } = await axios.post("/api/images", formData, {
         headers: {
           Authorization: Cookies.get("currentUser"),
           "Content-Type": "multipart/form-data",
