@@ -4,7 +4,7 @@ import Sidebar from "@/components/Sidebar";
 import Header from "@/components/Header";
 import Cookies from "js-cookie";
 import axios from "axios";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 
 export default function DefaultLayout({ children }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);

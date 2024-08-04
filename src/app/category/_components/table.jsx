@@ -4,7 +4,6 @@ import Cookies from "js-cookie";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Swal from "sweetalert2";
-import Router from "next/router";
 import axios from "axios";
 
 export default function Table({ categories }) {
@@ -16,23 +15,23 @@ export default function Table({ categories }) {
     try {
       await axios.delete(`/api/categories/${id}`, {
         headers: {
-          Authorization: `${Cookies.get("currentUser")}`
-        }
-      })
+          Authorization: `${Cookies.get("currentUser")}`,
+        },
+      });
 
       Swal.fire({
         title: "Success",
         text: "Category deleted",
-        icon: "Success"
-      })
-      router.refresh()
+        icon: "Success",
+      });
+      router.refresh();
     } catch (error) {
-      console.log(error)
+      console.log(error);
       Swal.fire({
         title: "error",
-        text: error?.request?.response || 'Internal Server Error',
-        icon: "error"
-      })
+        text: error?.request?.response || "Internal Server Error",
+        icon: "error",
+      });
     }
   }
 
